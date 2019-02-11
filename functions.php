@@ -2,7 +2,7 @@
 
 function currency_format($number) {
     $number = ceil($number);
-    return number_format($number, 0, ",", " ") . " ₽";
+    return number_format($number, 0, ",", " ");
 }
 
 function include_template($name, $data) {
