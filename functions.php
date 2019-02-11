@@ -21,3 +21,9 @@ function include_template($name, $data) {
 
     return $result;
 }
+
+function esc($str) {
+    $text = strip_tags($str);
+
+    return $text;
+}

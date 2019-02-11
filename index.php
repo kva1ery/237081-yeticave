@@ -11,7 +11,8 @@ $layout_content = include_template("layout.php", [
     "content" => $page_content,
     "title" => "Главная",
     "is_auth" => $is_auth,
-    "user_name" => $user_name
+    "user_name" => $user_name,
+    "lots_categories" => $lots_categories
 ]);
 
 print($layout_content);
