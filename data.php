@@ -5,13 +5,6 @@ $user_name = 'Валерий';
 
 $lots_categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
 
-function time_to_midnight() {
-    $curr_time = date_create("now");
-    $midnight = date_create("tomorrow");
-    $dt_diff = date_diff($midnight, $curr_time);
-    return date_interval_format($dt_diff, "%H:%i");
-}
-
 $lots = [
     [
         "name" => "2014 Rossignol District Snowboard",

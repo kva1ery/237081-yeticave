@@ -5,6 +5,13 @@ function currency_format($number) {
     return number_format($number, 0, ",", " ");
 }
 
+function time_to_midnight() {
+    $curr_time = date_create("now");
+    $midnight = date_create("tomorrow");
+    $dt_diff = date_diff($midnight, $curr_time);
+    return date_interval_format($dt_diff, "%H:%i");
+}
+
 function include_template($name, $data) {
     $name = 'templates/' . $name;
     $result = '';
@@ -24,6 +31,5 @@ function include_template($name, $data) {
 
 function esc($str) {
     $text = strip_tags($str);
-
     return $text;
 }
