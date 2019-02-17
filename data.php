@@ -5,8 +5,6 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Валерий';
 
-$lots_categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
-
 $lots = [
     [
         "name" => "2014 Rossignol District Snowboard",
