@@ -11,13 +11,17 @@ if (!$conn) {
 }
 else {
 
-    $sql = "select * from categories;";
+    $sql = "select * from categories";
     $lots_categories = db_fetch_data($conn, $sql);
-
-    $page_content = include_template("index.php", [
-        "lots_categories" => $lots_categories,
-        "lots" => $lots
-    ]);
+    if (!$lots_categories){
+        $error = mysqli_error($conn);
+        $page_content = include_template("error.php", ["error" => $error]);
+    } else {
+        $page_content = include_template("index.php", [
+            "lots_categories" => $lots_categories,
+            "lots" => $lots
+        ]);
+    }
 }
 
 $layout_content = include_template("layout.php", [
