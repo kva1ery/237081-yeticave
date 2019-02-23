@@ -11,7 +11,8 @@
                     <span class="lot__amount">Стартовая цена</span>
                     <span class="lot__cost"><?=currency_format($lot["start_price"])?><b class="rub">р</b></span>
                 </div>
-                <div class="lot__timer timer">
+                <?php $time_finish = is_less_than_hour($lot["finish_date"]) ? "timer--finishing" : "";?>
+                <div class="lot__timer timer <?=$time_finish;?>">
                     <?=time_to_finish($lot["finish_date"])?>
                 </div>
             </div>

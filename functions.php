@@ -6,7 +6,7 @@ function currency_format($number) {
 }
 
 /**
- * Склонение числительныхфывфывфывф
+ * Склонение числительных
  * @param int $numberof — склоняемое число
  * @param string $value — первая часть слова (можно назвать корнем)
  * @param array $suffix — массив возможных окончаний слов
@@ -15,7 +15,6 @@ function currency_format($number) {
  */
 function numberof($numberof, $value, $suffix)
 {
-    // не будем склонять отрицательные числа
     $numberof = abs($numberof);
     $keys = array(2, 0, 1, 1, 1, 2);
     $mod = $numberof % 100;
@@ -24,16 +23,43 @@ function numberof($numberof, $value, $suffix)
     return $value . $suffix[$suffix_key];
 }
 
+/**
+ * Возвращает оставшееся до даты время в текстовом представлении.
+ * Если дата в прошлом возвращает false
+ * @param DateTime $finish_date — дата время до которого считается остаток
+ * @return string
+ *
+ */
 function time_to_finish($finish_date) {
     $curr_time = date_create("now");
-
     if (is_string($finish_date)) {
         $finish_date = date_create($finish_date);
     }
-
-    $dt_diff = date_diff($finish_date, $curr_time);
+    if ($finish_date <= $curr_time)
+    {
+        return false;
+    }
+    $dt_diff =  date_diff($finish_date, $curr_time);
     $day = numberof($dt_diff->days, "д", ["ень", "ня", "ней"]);
     return date_interval_format($dt_diff, "%D $day %H:%I");
+}
+
+/**
+ * Возвращает true если до даты остался час, иначе false
+ * @param DateTime $finish_date — дата время до которого считается остаток
+ * @return string
+ *
+ */
+function is_less_than_hour($finish_date) {
+    $curr_time = date_create("now");
+    if (is_string($finish_date)) {
+        $finish_date = date_create($finish_date);
+    }
+    $hour = date_interval_create_from_date_string("1 hour");
+    $less_hour = clone $finish_date;
+    date_sub($less_hour, $hour);
+    $result = $curr_time >= $less_hour && $curr_time < $finish_date;
+    return $result;
 }
 
 function include_template($name, $data) {
