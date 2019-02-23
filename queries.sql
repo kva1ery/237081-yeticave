@@ -1,13 +1,13 @@
 use yeticave;
 
 -- Заполнение списка категорий --
-insert into categories (name)
-  values ('Доски и лыжи'),
-         ('Крепления'),
-         ('Ботинки'),
-         ('Одежда'),
-         ('Инструменты'),
-         ('Разное');
+insert into categories (name, class)
+  values ('Доски и лыжи', 'promo__item--boards'),
+         ('Крепления', 'promo__item--attachment'),
+         ('Ботинки', 'promo__item--boots'),
+         ('Одежда', 'promo__item--clothing'),
+         ('Инструменты', 'promo__item--tools'),
+         ('Разное', 'promo__item--other');
 
 -- Заполнение пользователей --
 insert into users (email, name, password, contacts)
