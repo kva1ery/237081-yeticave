@@ -23,8 +23,8 @@ if (!$conn) {
               ."lots.description, lots.start_price as current_price, categories.name as category_name"
               ."  from lots"
               ."  join categories on lots.category = categories.id"
-              ." where lots.id = $lot_id";
-        $lot = db_fetch_data($conn, $sql);
+              ." where lots.id = ?";
+        $lot = db_fetch_data($conn, $sql, [$lot_id]);
         if (!$lot && mysqli_errno($conn)) {
             show_error($conn);
         }
@@ -36,9 +36,9 @@ if (!$conn) {
         $sql = "select bets.id, users.name as user_name, bets.price, bets.create_date from bets"
               ."  join lots on bets.lot = lots.id"
               ."  join users on bets.user = users.id"
-              ." where lots.id = $lot_id"
+              ." where lots.id = ?"
               ." order by bets.create_date desc;";
-        $bets = db_fetch_data($conn, $sql);
+        $bets = db_fetch_data($conn, $sql, [$lot_id]);
         if (!$bets && mysqli_errno($conn)) {
             show_error($conn);
         }

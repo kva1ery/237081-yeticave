@@ -20,9 +20,9 @@ if (!$conn) {
           ."  from bets"
           ."  join lots on bets.lot = lots.id"
           ."  join categories on lots.category = categories.id"
-          ."   where bets.user = 2;";
+          ."   where bets.user = ?;";
 
-    $bets = db_fetch_data($conn, $sql);
+    $bets = db_fetch_data($conn, $sql, [2]);
     if (!$bets && mysqli_errno($conn)) {
         show_error($conn);
     }
