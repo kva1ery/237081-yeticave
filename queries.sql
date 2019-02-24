@@ -53,11 +53,11 @@ select lots.*, categories.name as category_name
 
 -- Получение ставок для лота --
 select bets.id, users.name, bets.price, bets.create_date
-from bets
-            join lots on bets.lot = lots.id
-            join users on bets.user = users.id
-where lots.id = 1
-order by bets.create_date desc;
+  from bets
+  join lots on bets.lot = lots.id
+  join users on bets.user = users.id
+ where lots.id = 1
+ order by bets.create_date desc;
 
 -- Получение ставок пользователя --
   select bets.id, categories.name, lots.name, lots.finish_date, bets.price, bets.create_date

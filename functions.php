@@ -95,3 +95,15 @@ function show_error($conn) {
     print($layout_content);
     die();
 };
+
+function show_404() {
+    http_response_code(404);
+    $page_content = include_template("404.php", []);
+
+    $layout_content = include_template("layout.php", [
+        "content" => $page_content,
+        "title" => "Страница не найдена"
+    ]);
+    print($layout_content);
+    die();
+};

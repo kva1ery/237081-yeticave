@@ -26,25 +26,23 @@ if (!$conn) {
     }
 
     if (!$category) {
-        http_response_code(404);
-        $page_content = include_template("404.php", []);
-    } else {
-        $sql = "select lots.id, lots.name, lots.image, lots.start_price, lots.finish_date, categories.name as category_name from lots"
-              ."  join categories on lots.category = categories.id"
-              ." where finish_date > current_timestamp"
-              ."   and categories.id = $category_id"
-              ." order by create_date desc"
-              ." limit 9;";
-
-        $lots = db_fetch_data($conn, $sql);
-        if (!$lots && mysqli_errno($conn)) {
-            show_error($conn);
-        }
-
-        $page_content = include_template("category.php", [
-            "lots" => $lots
-        ]);
+        show_404();
     }
+    $sql = "select lots.id, lots.name, lots.image, lots.start_price, lots.finish_date, categories.name as category_name from lots"
+          ."  join categories on lots.category = categories.id"
+          ." where finish_date > current_timestamp"
+          ."   and categories.id = $category_id"
+          ." order by create_date desc"
+          ." limit 9;";
+
+    $lots = db_fetch_data($conn, $sql);
+    if (!$lots && mysqli_errno($conn)) {
+        show_error($conn);
+    }
+
+    $page_content = include_template("category.php", [
+        "lots" => $lots
+    ]);
 }
 $layout_content = include_template("layout.php", [
     "content" => $page_content,
