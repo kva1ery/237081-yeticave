@@ -8,19 +8,17 @@ function currency_format($number) {
 /**
  * Склонение числительных
  * @param int $numberof — склоняемое число
- * @param string $value — первая часть слова (можно назвать корнем)
- * @param array $suffix — массив возможных окончаний слов
+ * @param array $declensions — склонения существительного
  * @return string
  *
  */
-function numberof($numberof, $value, $suffix)
+function numberof($numberof, $declensions)
 {
     $numberof = abs($numberof);
     $keys = array(2, 0, 1, 1, 1, 2);
     $mod = $numberof % 100;
-    $suffix_key = $mod > 4 && $mod < 20 ? 2 : $keys[min($mod%10, 5)];
-
-    return $value . $suffix[$suffix_key];
+    $key = ($mod > 4 && $mod < 20) ? 2 : $keys[min($mod%10, 5)];
+    return $declensions[$key];
 }
 
 /**
@@ -35,13 +33,17 @@ function time_to_finish($finish_date) {
     if (is_string($finish_date)) {
         $finish_date = date_create($finish_date);
     }
-    if ($finish_date <= $curr_time)
-    {
+    if ($finish_date <= $curr_time) {
         return false;
     }
     $dt_diff =  date_diff($finish_date, $curr_time);
-    $day = numberof($dt_diff->days, "д", ["ень", "ня", "ней"]);
-    return date_interval_format($dt_diff, "%D $day %H:%I");
+
+    $format = "%H:%I";
+    if ($dt_diff->days > 0) {
+        $day = numberof($dt_diff->days, ["день", "дня", "дней"]);
+        $format = "%D $day %H:%I";
+    }
+    return date_interval_format($dt_diff, $format);
 }
 
 /**
@@ -58,7 +60,7 @@ function is_less_than_hour($finish_date) {
     $hour = date_interval_create_from_date_string("1 hour");
     $less_hour = clone $finish_date;
     date_sub($less_hour, $hour);
-    $result = $curr_time >= $less_hour && $curr_time < $finish_date;
+    $result = ($curr_time >= $less_hour) && ($curr_time < $finish_date);
     return $result;
 }
 
@@ -84,8 +86,7 @@ function esc($str) {
     return $text;
 }
 
-function show_error($conn) {
-    $error = mysqli_error($conn);
+function show_error($error) {
     $page_content = include_template("error.php", ["error" => $error]);
 
     $layout_content = include_template("layout.php", [
@@ -93,7 +94,7 @@ function show_error($conn) {
         "title" => "Ошибка"
     ]);
     print($layout_content);
-    die();
+    exit;
 };
 
 function show_404() {
@@ -105,5 +106,5 @@ function show_404() {
         "title" => "Страница не найдена"
     ]);
     print($layout_content);
-    die();
+    exit;
 };

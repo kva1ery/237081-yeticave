@@ -6,7 +6,7 @@
         <tr class="rates__item <?=$win ? "rates__item--win" : "";?>">
             <td class="rates__info">
                 <div class="rates__img">
-                    <img src="/img/<?=$bet["lot_image"]?>" width="54" height="40" alt="<?=esc($bet["lots_name"]);?>">
+                    <img src="/img/<?=$bet["lot_image"]?>" width="54" height="40" alt="<?=esc($bet["lot_name"]);?>">
                 </div>
                 <h3 class="rates__title"><a href="lot.php?id=<?=$bet["lot_id"];?>"><?=esc($bet["lot_name"]);?></a></h3>
             </td>
