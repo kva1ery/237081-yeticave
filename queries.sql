@@ -1,13 +1,13 @@
 use yeticave;
 
 -- Заполнение списка категорий --
-insert into categories (name)
-  values ('Доски и лыжи'),
-         ('Крепления'),
-         ('Ботинки'),
-         ('Одежда'),
-         ('Инструменты'),
-         ('Разное');
+insert into categories (name, class)
+  values ('Доски и лыжи', 'promo__item--boards'),
+         ('Крепления', 'promo__item--attachment'),
+         ('Ботинки', 'promo__item--boots'),
+         ('Одежда', 'promo__item--clothing'),
+         ('Инструменты', 'promo__item--tools'),
+         ('Разное', 'promo__item--other');
 
 -- Заполнение пользователей --
 insert into users (email, name, password, contacts)
@@ -53,11 +53,11 @@ select lots.*, categories.name as category_name
 
 -- Получение ставок для лота --
 select bets.id, users.name, bets.price, bets.create_date
-from bets
-            join lots on bets.lot = lots.id
-            join users on bets.user = users.id
-where lots.id = 1
-order by bets.create_date desc;
+  from bets
+  join lots on bets.lot = lots.id
+  join users on bets.user = users.id
+ where lots.id = 1
+ order by bets.create_date desc;
 
 -- Получение ставок пользователя --
   select bets.id, categories.name, lots.name, lots.finish_date, bets.price, bets.create_date

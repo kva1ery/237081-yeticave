@@ -6,7 +6,8 @@ use yeticave;
 
 create table categories (
   id   int auto_increment primary key,
-  name varchar(30) not null
+  name varchar(30) not null,
+  class varchar(30)
 );
 
 create table users (

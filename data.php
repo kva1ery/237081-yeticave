@@ -1,51 +1,94 @@
 <?php
-$is_auth = rand(0, 1);
+require_once "mysql_helper.php";
 
+
+$lots_categories = [];
+$is_auth = rand(0, 1);
 $user_name = 'Валерий';
 
-$lots_categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
+function get_connection() {
+    require "config/db.php";
+    $conn = mysqli_connect($db["host"], $db["user"], $db["password"], $db["database"]);
+    mysqli_set_charset($conn, "utf8");
+    if (!$conn) {
+        show_error(mysqli_connect_error());
+    }
+    return $conn;
+}
 
-$lots = [
-    [
-        "name" => "2014 Rossignol District Snowboard",
-        "category" => "Доски и лыжи",
-        "price" => 10999,
-        "image_url" => "img/lot-1.jpg",
-        "time_left" => time_to_midnight()
-    ],
-    [
-        "name" => "DC Ply Mens 2016/2017 Snowboard",
-        "category" => "Доски и лыжи",
-        "price" => 159999,
-        "image_url" => "img/lot-2.jpg",
-        "time_left" => time_to_midnight()
-    ],
-    [
-        "name" => "Крепления Union Contact Pro 2015 года размер L/XL",
-        "category" => "Крепления",
-        "price" => 8000,
-        "image_url" => "img/lot-3.jpg",
-        "time_left" => time_to_midnight()
-    ],
-    [
-        "name" => "Ботинки для сноуборда DC Mutiny Charocal",
-        "category" => "Ботинки",
-        "price" => 10999,
-        "image_url" => "img/lot-4.jpg",
-        "time_left" => time_to_midnight()
-    ],
-    [
-        "name" => "Куртка для сноуборда DC Mutiny Charocal",
-        "category" => "Одежда",
-        "price" => 7500,
-        "image_url" => "img/lot-5.jpg",
-        "time_left" => time_to_midnight()
-    ],
-    [
-        "name" => "Маска Oakley Canopy",
-        "category" => "Разное",
-        "price" => 5400,
-        "image_url" => "img/lot-6.jpg",
-        "time_left" => time_to_midnight()
-    ],
-];
+function get_categories($conn) {
+    $sql = "select * from categories";
+    $lots_categories = db_fetch_data($conn, $sql);
+    if (!$lots_categories && mysqli_errno($conn)) {
+        show_error(mysqli_error($conn));
+    }
+    return $lots_categories;
+}
+
+function get_lots($conn, $limit) {
+    $sql = "select lots.id, lots.name, lots.image, lots.start_price, lots.finish_date, categories.name as category_name from lots"
+          ."  join categories on lots.category = categories.id"
+          ." where finish_date > current_timestamp"
+          ." order by create_date desc"
+          ." limit ?;";
+    $lots = db_fetch_data($conn, $sql, [$limit]);
+    if (!$lots && mysqli_errno($conn)) {
+        show_error(mysqli_error($conn));
+    }
+    return $lots;
+}
+
+function get_lots_by_category($conn, $category_id, $limit) {
+    $sql = "select lots.id, lots.name, lots.image, lots.start_price, lots.finish_date, categories.name as category_name from lots"
+          ."  join categories on lots.category = categories.id"
+          ." where finish_date > current_timestamp"
+          ."   and categories.id = ?"
+          ." order by create_date desc"
+          ." limit ?;";
+    $lots = db_fetch_data($conn, $sql, [$category_id, $limit]);
+    if (!$lots && mysqli_errno($conn)) {
+        show_error(mysqli_error($conn));
+    }
+    return $lots;
+}
+
+function get_lot($conn, $lot_id) {
+    $sql = "select lots.id, lots.name, lots.image, lots.start_price, lots.finish_date, lots.price_step,"
+          ."    lots.description, lots.start_price as current_price, categories.name as category_name"
+          ."  from lots"
+          ."  join categories on lots.category = categories.id"
+          ." where lots.id = ?";
+    $lot = db_fetch_data($conn, $sql, [$lot_id]);
+    if (!$lot && mysqli_errno($conn)) {
+        show_error(mysqli_error($conn));
+    }
+    return $lot[0];
+}
+
+function get_bets_by_lot($conn, $lot_id) {
+    $sql = "select bets.id, users.name as user_name, bets.price, bets.create_date from bets"
+        ."  join lots on bets.lot = lots.id"
+        ."  join users on bets.user = users.id"
+        ." where lots.id = ?"
+        ." order by bets.create_date desc;";
+    $bets = db_fetch_data($conn, $sql, [$lot_id]);
+    if (!$bets && mysqli_errno($conn)) {
+        show_error(mysqli_error($conn));
+    }
+    return $bets;
+}
+
+function get_bets_by_user($conn, $user_id) {
+    $sql = "select bets.id, categories.name as category_name, lots.id as lot_id, lots.name as lot_name, lots.image as lot_image,"
+          ."    lots.finish_date lot_finish_date, bets.price, bets.create_date, bets.win"
+          ."  from bets"
+          ."  join lots on bets.lot = lots.id"
+          ."  join categories on lots.category = categories.id"
+          ." where bets.user = ?;";
+
+    $bets = db_fetch_data($conn, $sql, [$user_id]);
+    if (!$bets && mysqli_errno($conn)) {
+        show_error(mysqli_error($conn));
+    }
+    return $bets;
+}
