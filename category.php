@@ -31,6 +31,7 @@ $layout_content = include_template("layout.php", [
     "title" => $category["name"],
     "is_auth" => $is_auth,
     "user_name" => $user_name,
-    "lots_categories" => $lots_categories
+    "lots_categories" => $lots_categories,
+    "current_category" => $category_id
 ]);
 print($layout_content);

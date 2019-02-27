@@ -12,7 +12,11 @@
     <header class="main-header">
         <div class="main-header__container container">
             <h1 class="visually-hidden">YetiCave</h1>
+            <?php if (isset($is_main) && $is_main): ?>
             <a class="main-header__logo">
+            <?php else: ?>
+            <a class="main-header__logo" href="index.php">
+            <?php endif; ?>
                 <img src="img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
             </a>
             <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru">
@@ -40,7 +44,19 @@
         </div>
     </header>
 
-    <main class="container">
+    <main>
+        <?php if (!isset($is_main) || !$is_main): ?>
+            <nav class="nav">
+                <ul class="nav__list container">
+                    <?php foreach ($lots_categories as $category): ?>
+                        <?php $current = (isset($current_category) && $category["id"] == $current_category) ? "nav__item--current" : ""; ?>
+                        <li class="nav__item <?=$current;?>">
+                            <a href="category.php?id=<?=$category["id"];?>"><?=$category["name"];?></a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
         <?=$content?>
     </main>
 </div>
@@ -50,7 +66,7 @@
         <ul class="nav__list container">
             <?php foreach ($lots_categories as $category): ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html?category=<?=$category["id"];?>"><?=$category["name"];?></a>
+                    <a href="category.php?id=<?=$category["id"];?>"><?=$category["name"];?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
