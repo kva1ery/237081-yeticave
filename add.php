@@ -19,37 +19,20 @@ function validate_form($form) {
         }
     }
 
-    if (!empty($form["start_price"]) && (!is_numeric($form["start_price"]) || ((int)$form["start_price"] < 0))) {
+    $options = [
+        "options" => [
+            "min_range" => 0
+        ]
+    ];
+    if (!filter_var($form["start_price"], FILTER_VALIDATE_INT, $options)) {
         $errors["start_price"] = "Начальная цена должна быть положительным числом";
     }
 
-    if (!empty($form["price_step"]) && (!is_numeric($form["price_step"]) || ((int)$form["price_step"] < 0))) {
+    if (!filter_var($form["price_step"], FILTER_VALIDATE_INT, $options)) {
         $errors["price_step"] = "Шаг ставки должен быть положительным числом";
     }
 
     return $errors;
-}
-
-function file_is_image_valid($file_name) {
-    if (empty($_FILES[$file_name]["name"])) {
-        return false;
-    }
-    $tmp_path = $_FILES[$file_name]["tmp_name"];
-    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-    $file_type = finfo_file($finfo, $tmp_path);
-    if ($file_type !== "image/png" && $file_type !== "image/jpeg" && $file_type !== "image/webp") {
-        return false;
-    }
-    return true;
-}
-
-function save_image($file_name) {
-    $tmp_path = $_FILES[$file_name]["tmp_name"];
-    $extension = pathinfo($_FILES[$file_name]["name"], PATHINFO_EXTENSION);
-    $name = sprintf('%s.%s', uniqid(), $extension);
-    $path = sprintf('uploads/%s', $name);
-    move_uploaded_file($tmp_path, $path);
-    return $name;
 }
 
 

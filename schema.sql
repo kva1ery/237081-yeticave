@@ -15,7 +15,7 @@ create table users (
   register_date timestamp not null default current_timestamp,
   email         varchar(130) not null,
   name          varchar(100) not null,
-  password      varchar(30) not null,
+  password      varchar(60) not null,
   avatar        varchar(50),
   contacts      varchar(256) not null
 );

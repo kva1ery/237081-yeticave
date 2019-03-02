@@ -91,7 +91,8 @@ function show_error($error) {
 
     $layout_content = include_template("layout.php", [
         "content" => $page_content,
-        "title" => "Ошибка"
+        "title" => "Ошибка",
+        "lots_categories" => []
     ]);
     print($layout_content);
     exit;
@@ -103,8 +104,31 @@ function show_404() {
 
     $layout_content = include_template("layout.php", [
         "content" => $page_content,
-        "title" => "Страница не найдена"
+        "title" => "Страница не найдена",
+        "lots_categories" => []
     ]);
     print($layout_content);
     exit;
 };
+
+function file_is_image_valid($file_name) {
+    if (empty($_FILES[$file_name]["name"])) {
+        return false;
+    }
+    $tmp_path = $_FILES[$file_name]["tmp_name"];
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $file_type = finfo_file($finfo, $tmp_path);
+    if ($file_type !== "image/png" && $file_type !== "image/jpeg" && $file_type !== "image/webp") {
+        return false;
+    }
+    return true;
+}
+
+function save_image($file_name) {
+    $tmp_path = $_FILES[$file_name]["tmp_name"];
+    $extension = pathinfo($_FILES[$file_name]["name"], PATHINFO_EXTENSION);
+    $name = sprintf('%s.%s', uniqid(), $extension);
+    $path = sprintf('uploads/%s', $name);
+    move_uploaded_file($tmp_path, $path);
+    return $name;
+}

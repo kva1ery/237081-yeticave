@@ -3,7 +3,7 @@ require_once "mysql_helper.php";
 
 
 $lots_categories = [];
-$is_auth = rand(0, 1);
+$is_auth = 0;
 $user_name = 'Валерий';
 
 function get_connection() {
@@ -65,6 +65,15 @@ function get_lot($conn, $lot_id) {
     return $lot[0];
 }
 
+function get_user_by_email($conn, $email) {
+    $sql = "select * from users where email = ?;";
+    $user = db_fetch_data($conn, $sql, [$email]);
+    if (!$user && mysqli_errno($conn)) {
+        show_error(mysqli_error($conn));
+    }
+    return $user[0] ?? false;
+}
+
 function get_bets_by_lot($conn, $lot_id) {
     $sql = "select bets.id, users.name as user_name, bets.price, bets.create_date from bets"
         ."  join lots on bets.lot = lots.id"
@@ -111,4 +120,21 @@ function save_lot($conn, $lot) {
         show_error(mysqli_error($conn));
     }
     return $lot_id;
+}
+
+function save_user($conn, $user) {
+    $sql = "insert into users (email, name, password, contacts, avatar)"
+          ."values (?, ?, ?, ?, ?);";
+    $values = [
+        $user["email"],
+        $user["name"],
+        $user["password"],
+        $user["contacts"],
+        $user["avatar"]
+    ];
+    $user_id = db_insert_data($conn, $sql, $values);
+    if (!$user_id) {
+        show_error(mysqli_error($conn));
+    }
+    return $user_id;
 }
