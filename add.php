@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lot = $_POST;
     $errors = validate_form($lot);
 
-    if (count($errors) == 0) {
+    if (empty($errors)) {
         if (file_is_image_valid("image")) {
             $lot["image"] = save_image("image");
         } else {
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    if(count($errors) == 0) {
+    if(empty($errors)) {
         $lot["author"] = 1;
         $lot_id = save_lot($conn, $lot);
         header("Location: lot.php?id=" . $lot_id);
