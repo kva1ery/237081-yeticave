@@ -92,3 +92,23 @@ function get_bets_by_user($conn, $user_id) {
     }
     return $bets;
 }
+
+function save_lot($conn, $lot) {
+    $sql = "insert into lots (name, category, image, start_price, finish_date, price_step, author, description)"
+          ."values (?, ?, ?, ?, ?, ?, ?, ?);";
+    $values = [
+        $lot["name"],
+        $lot["category"],
+        $lot["image"],
+        $lot["start_price"],
+        $lot["finish_date"],
+        $lot["price_step"],
+        $lot["author"],
+        $lot["description"]
+    ];
+    $lot_id = db_insert_data($conn, $sql, $values);
+    if (!$lot_id) {
+        show_error(mysqli_error($conn));
+    }
+    return $lot_id;
+}
