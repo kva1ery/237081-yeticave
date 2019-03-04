@@ -1,22 +1,9 @@
 <?php
 require_once "functions.php";
 require_once "data.php";
+require_once "forms_validate.php";
 
-
-function validate_form($form) {
-    $required_fields = [
-        "email" => "Введите e-mail",
-        "password"=> "Введите пароль"
-    ];
-    $errors =[];
-    foreach ($required_fields as $field => $error_text) {
-        if (empty($form[$field])) {
-            $errors[$field] = $error_text;
-        }
-    }
-    return $errors;
-}
-
+session_start();
 
 $conn = get_connection();
 $lots_categories = get_categories($conn);
@@ -26,13 +13,16 @@ $user = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $login = $_POST;
-    $errors = validate_form($login);
+    $errors = login_validate($login);
 
     if (empty($errors)) {
         $user = get_user_by_email($conn, $login["email"]);
     }
-    if (empty($user)) {
-        $errors["email"] = "";
+    if (empty($errors) && !empty($user) && password_verify($login["password"], $user["password"])) {
+        $_SESSION["user"] = $user;
+        header("Location: /");
+    } else {
+        $errors["form"] = "Вы ввели неверный email/пароль";
     }
 }
 

@@ -6,7 +6,7 @@
     $value = $user["email"] ?? ""; ?>
     <div class="form__item <?=$classname;?>">
         <label for="email">E-mail*</label>
-        <input id="email" type="text" name="email" placeholder="Введите e-mail" value="<?=$value;?>">
+        <input id="email" type="text" name="email" placeholder="Введите e-mail" value="<?=$value;?>" required>
         <span class="form__error"><?=$error;?></span>
     </div>
 
@@ -15,7 +15,7 @@
     $value = $user["password"] ?? ""; ?>
     <div class="form__item <?=$classname;?>">
         <label for="password">Пароль*</label>
-        <input id="password" type="password" name="password" placeholder="Введите пароль" value="<?=$value;?>">
+        <input id="password" type="password" name="password" placeholder="Введите пароль" value="<?=$value;?>" required>
         <span class="form__error"><?=$error;?></span>
     </div>
 
@@ -24,7 +24,7 @@
     $value = $user["name"] ?? ""; ?>
     <div class="form__item <?=$classname;?>">
         <label for="name">Имя*</label>
-        <input id="name" type="text" name="name" placeholder="Введите имя" value="<?=$value;?>">
+        <input id="name" type="text" name="name" placeholder="Введите имя" value="<?=$value;?>" required>
         <span class="form__error"><?=$error;?></span>
     </div>
 
@@ -33,7 +33,7 @@
     $value = $user["contacts"] ?? ""; ?>
     <div class="form__item <?=$classname;?>">
         <label for="contacts">Контактные данные*</label>
-        <textarea id="contacts" name="contacts" placeholder="Напишите как с вами связаться" ><?=$value;?></textarea>
+        <textarea id="contacts" name="contacts" placeholder="Напишите как с вами связаться" required><?=$value;?></textarea>
         <span class="form__error"><?=$error;?></span>
     </div>
 

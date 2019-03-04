@@ -1,26 +1,7 @@
 <?php
 require_once "functions.php";
 require_once "data.php";
-
-
-function validate_form($form) {
-    $required_fields = [
-        "name" => "Введите имя",
-        "email" => "Введите e-mail",
-        "password"=> "Введите пароль",
-        "contacts"=> "Напишите как с вами связаться"
-    ];
-    $errors =[];
-    foreach ($required_fields as $field => $error_text) {
-        if (empty($form[$field])) {
-            $errors[$field] = $error_text;
-        }
-    }
-    if (!filter_var($form["email"], FILTER_VALIDATE_EMAIL)) {
-        $errors["email"] = "Введите корректный e-mail";
-    }
-    return $errors;
-}
+require_once "forms_validate.php";
 
 
 $conn = get_connection();
@@ -30,7 +11,7 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user = $_POST;
-    $errors = validate_form($user);
+    $errors = user_validate($user);
 
     $db_user = get_user_by_email($conn, $user["email"]);
     if(!empty($db_user)) {

@@ -1,39 +1,7 @@
 <?php
 require_once "functions.php";
 require_once "data.php";
-
-
-function validate_form($form) {
-    $required_fields = [
-        "name" => "Введите наименование лота",
-        "category" => "Выберите категорию",
-        "description"=> "Напишите описание лота",
-        "finish_date"=> "Введите дату завершения торгов",
-        "start_price"=> "Введите начальную цену",
-        "price_step"=> "Введите шаг ставки"
-    ];
-    $errors =[];
-    foreach ($required_fields as $field => $error_text) {
-        if (empty($form[$field])) {
-            $errors[$field] = $error_text;
-        }
-    }
-
-    $options = [
-        "options" => [
-            "min_range" => 0
-        ]
-    ];
-    if (!filter_var($form["start_price"], FILTER_VALIDATE_INT, $options)) {
-        $errors["start_price"] = "Начальная цена должна быть положительным числом";
-    }
-
-    if (!filter_var($form["price_step"], FILTER_VALIDATE_INT, $options)) {
-        $errors["price_step"] = "Шаг ставки должен быть положительным числом";
-    }
-
-    return $errors;
-}
+require_once "forms_validate.php";
 
 
 $conn = get_connection();
@@ -43,7 +11,7 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lot = $_POST;
-    $errors = validate_form($lot);
+    $errors = lot_validate($lot);
 
     if (empty($errors)) {
         if (file_is_image_valid("image")) {
