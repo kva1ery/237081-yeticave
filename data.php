@@ -3,8 +3,6 @@ require_once "mysql_helper.php";
 
 
 $lots_categories = [];
-$is_auth = 0;
-$user_name = 'Валерий';
 
 function get_connection() {
     require "config/db.php";
