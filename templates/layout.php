@@ -23,12 +23,14 @@
                 <input type="search" name="search" placeholder="Поиск лота">
                 <input class="main-header__search-btn" type="submit" name="find" value="Найти">
             </form>
-            <a class="main-header__add-lot button" href="/add.php">Добавить лот</a>
-
+            <?php if (isset($is_auth) && $is_auth): ?>
+                <a class="main-header__add-lot button" href="/add.php">Добавить лот</a>
+            <?php endif; ?>
             <nav class="user-menu">
-                <?php if (isset($is_auth) && $is_auth === 1): ?>
+                <?php if (isset($is_auth) && $is_auth): ?>
                     <div class="user-menu__logged">
                         <p><?=$user_name ?? "";?></p>
+                        <a href="logout.php">Выйти</a>
                     </div>
                 <?php else: ?>
                     <ul class="user-menu__list">

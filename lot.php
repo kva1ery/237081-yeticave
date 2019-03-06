@@ -1,6 +1,7 @@
 <?php
 require_once "functions.php";
 require_once "data.php";
+require_once "auth.php";
 
 
 $conn = get_connection();
@@ -24,7 +25,8 @@ $lot["min_bet"] = $lot["current_price"] + $lot["price_step"];
 
 $page_content = include_template("lot.php", [
     "lot" => $lot,
-    "bets" => $bets
+    "bets" => $bets,
+    "is_auth" => $is_auth
 ]);
 
 $layout_content = include_template("layout.php", [

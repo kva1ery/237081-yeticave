@@ -9,6 +9,7 @@
             <p class="lot-item__description"><?=esc($lot["description"]);?></p>
         </div>
         <div class="lot-item__right">
+            <?php if (isset($is_auth) && $is_auth): ?>
             <div class="lot-item__state">
                 <?php $time_finish = is_less_than_hour($lot["finish_date"]) ? "timer--finishing" : "";?>
                 <div class="lot-item__timer timer <?=$time_finish;?>">
@@ -32,6 +33,7 @@
                     <button type="submit" class="button">Сделать ставку</button>
                 </form>
             </div>
+            <?php endif; ?>
             <div class="history">
                 <h3>История ставок (<span><?=count($bets);?></span>)</h3>
                 <table class="history__list">

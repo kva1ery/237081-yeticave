@@ -2,7 +2,13 @@
 require_once "functions.php";
 require_once "data.php";
 require_once "forms_validate.php";
+require_once "auth.php";
 
+
+if (empty($is_auth) || !$is_auth) {
+    header('HTTP/1.1 403 Forbidden');
+    exit;
+}
 
 $conn = get_connection();
 $lots_categories = get_categories($conn);

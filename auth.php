@@ -4,7 +4,8 @@ require_once "data.php";
 
 session_start();
 $is_auth = isset($_SESSION["user"]);
-$user_name = $_SESSION["user"] ?? "";
+$user_name = $_SESSION["user"]["name"] ?? "";
+
 
 function login($conn, $login) {
     $user = get_user_by_email($conn, $login["email"]);
