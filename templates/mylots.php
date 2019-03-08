@@ -24,7 +24,7 @@
                 <?=currency_format($bet["price"]);?> р
             </td>
             <td class="rates__time">
-                <?=$bet["create_date"];?>
+                <?=time_from_start($bet["create_date"]);?>
             </td>
         </tr>
         <?php endforeach; ?>

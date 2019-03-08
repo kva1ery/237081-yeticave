@@ -38,15 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ((int)$bet["price"] >= $lot["min_bet"]) {
             $bet["user"] = $user["id"];
             $bet["lot"] = $lot_id;
-            $bet_id = save_bet($conn, $bet);
-            $lot["min_bet"] = (int)$bet["price"] + $lot["price_step"];
-            $new_bet = [
-                "id" => $bet_id,
-                "user_name" => $user_name,
-                "price" => (int)$bet["price"],
-                "create_date" => date("Y-m-d H:i:s")
-            ];
-            array_unshift($bets, $new_bet);
+            save_bet($conn, $bet);
+            header("Location: lot.php?id=" . $lot_id);
+            exit;
         } else {
             $errors["price"] = "Слишком маленькая ставка";
         }

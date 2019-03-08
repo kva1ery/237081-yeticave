@@ -47,6 +47,34 @@ function time_to_finish($finish_date) {
 }
 
 /**
+ * Возвращает дату в прошлом в текстовом представлении.
+ * Если дата в будущем возвращает false
+ * @param DateTime $start_date — дата время в прошлом
+ * @return string
+ *
+ */
+function time_from_start($start_date)
+{
+    $curr_time = date_create("now");
+    if (is_string($start_date)) {
+        $start_date = date_create($start_date);
+    }
+    if ($start_date > $curr_time) {
+        return false;
+    }
+    $dt_diff = date_diff($curr_time, $start_date);
+
+    $hour = DateInterval::createFromDateString("1 hour");
+    if ($dt_diff < $hour) {
+        $minutes = numberof($dt_diff->i, ["минута", "минуты", "минут"]);
+        $result = date_interval_format($dt_diff, "%i $minutes назад");
+    } else {
+        $result = date_format($start_date, "d.m.y в H:i");
+    }
+    return $result;
+}
+
+/**
  * Возвращает true если до даты остался час, иначе false
  * @param DateTime $finish_date — дата время до которого считается остаток
  * @return string

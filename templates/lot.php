@@ -45,7 +45,7 @@
                     <tr class="history__item">
                         <td class="history__name"><?=esc($bet["user_name"]);?></td>
                         <td class="history__price"><?=currency_format($bet["price"]);?> р</td>
-                        <td class="history__time"><?=$bet["create_date"];?></td>
+                        <td class="history__time"><?=time_from_start($bet["create_date"]);?></td>
                     </tr>
                     <?php endforeach; ?>
                 </table>
