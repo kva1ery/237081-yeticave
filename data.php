@@ -50,6 +50,19 @@ function get_lots_by_category($conn, $category_id, $limit) {
     return $lots;
 }
 
+function search_lots($conn, $search, $limit) {
+    $sql = "select lots.id, lots.name, lots.image, lots.start_price, lots.finish_date, categories.name as category_name from lots"
+          ."  join categories on lots.category = categories.id"
+          ." where finish_date > current_timestamp"
+          ."   and match(lots.name, lots.description) against(?)"
+          ." limit ?;";
+    $lots = db_fetch_data($conn, $sql, [$search, $limit]);
+    if (!$lots && mysqli_errno($conn)) {
+        show_error(mysqli_error($conn));
+    }
+    return $lots;
+}
+
 function get_lot($conn, $lot_id) {
     $sql = "select lots.id, lots.name, lots.image, lots.start_price, lots.finish_date, lots.price_step,"
           ."    lots.description, lots.start_price as current_price, categories.name as category_name"

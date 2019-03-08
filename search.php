@@ -7,25 +7,16 @@ require_once "auth.php";
 $conn = get_connection();
 $lots_categories = get_categories($conn);
 
-$category_id = "";
-$category = [];
-if (isset($_GET["id"])) {
-    $category_id = $_GET["id"];
-}
-foreach ($lots_categories as $cat) {
-    if ($cat["id"] == $category_id) {
-        $category = $cat;
-    }
-}
-if (!$category) {
-    show_404();
+$search = $_GET["search"] ?? '';
+
+$lots = [];
+if ($search) {
+    $lots = search_lots($conn, $search, 9);
 }
 
-$lots = get_lots_by_category($conn, $category_id, 9);
-
-$page_content = include_template("category.php", [
+$page_content = include_template("search.php", [
     "lots" => $lots,
-    "category" => $category["name"]
+    "search" => $search
 ]);
 
 $layout_content = include_template("layout.php", [
