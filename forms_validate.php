@@ -33,6 +33,23 @@ function lot_validate($form) {
     return $errors;
 }
 
+function bet_validate($form) {
+    $required_fields = [
+        "price" => "Введите вашу ставку"
+    ];
+    $errors = [];
+    foreach ($required_fields as $field => $error_text) {
+        if (empty($form[$field])) {
+            $errors[$field] = $error_text;
+        }
+    }
+
+    if (!empty($form["price"]) && (!is_numeric($form["price"]) || ((int)$form["price"] < 0))) {
+        $errors["price"] = "Ставка должна быть положительным числом";
+    }
+    return $errors;
+}
+
 function user_validate($form) {
     $required_fields = [
         "name" => "Введите имя",

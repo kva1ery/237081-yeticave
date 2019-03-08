@@ -24,11 +24,15 @@
                         Мин. ставка <span><?=currency_format($lot["min_bet"]);?> р</span>
                     </div>
                 </div>
-                <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
-                    <p class="lot-item__form-item form__item form__item--invalid">
+                <form class="lot-item__form" action="lot.php?id=<?=$lot["id"];?>" method="post">
+                    <?php $classname = isset($errors["price"]) ? "form__item--invalid" : "";
+                    $error = $errors["price"] ?? "";
+                    $value = $bet["price"] ?? ""; ?>
+                    <p class="lot-item__form-item form__item <?=$classname;?>">
                         <label for="cost">Ваша ставка</label>
-                        <input id="cost" type="text" name="cost" placeholder="<?=currency_format($lot["min_bet"]);?>">
-                        <span class="form__error">Введите наименование лота</span>
+                        <input id="cost" type="text" name="price" placeholder="<?=currency_format($lot["min_bet"]);?>"
+                               value="<?=$value;?>" required>
+                        <span class="form__error"><?=$error;?></span>
                     </p>
                     <button type="submit" class="button">Сделать ставку</button>
                 </form>

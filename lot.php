@@ -1,11 +1,13 @@
 <?php
 require_once "functions.php";
 require_once "data.php";
+require_once "forms_validate.php";
 require_once "auth.php";
 
 
 $conn = get_connection();
 $lots_categories = get_categories($conn);
+$errors = [];
 
 if (!isset($_GET["id"]) || !$_GET["id"]) {
     show_404();
@@ -23,10 +25,39 @@ if (count($bets) > 0 ) {
 }
 $lot["min_bet"] = $lot["current_price"] + $lot["price_step"];
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (empty($is_auth) || !$is_auth) {
+        header('HTTP/1.1 403 Forbidden');
+        exit;
+    }
+
+    $bet = $_POST;
+    $errors = bet_validate($bet);
+
+    if (empty($errors)) {
+        if ((int)$bet["price"] >= $lot["min_bet"]) {
+            $bet["user"] = $user["id"];
+            $bet["lot"] = $lot_id;
+            $bet_id = save_bet($conn, $bet);
+            $lot["min_bet"] = (int)$bet["price"] + $lot["price_step"];
+            $new_bet = [
+                "id" => $bet_id,
+                "user_name" => $user_name,
+                "price" => (int)$bet["price"],
+                "create_date" => date("Y-m-d H:i:s")
+            ];
+            array_unshift($bets, $new_bet);
+        } else {
+            $errors["price"] = "Слишком маленькая ставка";
+        }
+    }
+}
+
 $page_content = include_template("lot.php", [
     "lot" => $lot,
     "bets" => $bets,
-    "is_auth" => $is_auth
+    "is_auth" => $is_auth,
+    "errors" => $errors
 ]);
 
 $layout_content = include_template("layout.php", [

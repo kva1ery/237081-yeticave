@@ -5,6 +5,7 @@ require_once "data.php";
 session_start();
 $is_auth = isset($_SESSION["user"]);
 $user_name = $_SESSION["user"]["name"] ?? "";
+$user = $_SESSION["user"] ?? "";
 
 
 function login($conn, $login) {

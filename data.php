@@ -120,6 +120,21 @@ function save_lot($conn, $lot) {
     return $lot_id;
 }
 
+function save_bet($conn, $bet) {
+    $sql = "insert into bets (lot, user, price)"
+          ."values (?, ?, ?);";
+    $values = [
+        $bet["lot"],
+        $bet["user"],
+        $bet["price"]
+    ];
+    $bet_id = db_insert_data($conn, $sql, $values);
+    if (!$bet_id) {
+        show_error(mysqli_error($conn));
+    }
+    return $bet_id;
+}
+
 function save_user($conn, $user) {
     $sql = "insert into users (email, name, password, contacts, avatar)"
           ."values (?, ?, ?, ?, ?);";
