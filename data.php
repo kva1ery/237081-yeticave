@@ -36,31 +36,53 @@ function get_lots($conn, $limit) {
     return $lots;
 }
 
-function get_lots_by_category($conn, $category_id, $limit) {
+function get_lots_by_category($conn, $category_id, $limit, $offset) {
     $sql = "select lots.id, lots.name, lots.image, lots.start_price, lots.finish_date, categories.name as category_name from lots"
           ."  join categories on lots.category = categories.id"
           ." where finish_date > current_timestamp"
           ."   and categories.id = ?"
           ." order by create_date desc"
-          ." limit ?;";
-    $lots = db_fetch_data($conn, $sql, [$category_id, $limit]);
+          ." limit ? offset ?;";
+    $lots = db_fetch_data($conn, $sql, [$category_id, $limit, $offset]);
     if (!$lots && mysqli_errno($conn)) {
         show_error(mysqli_error($conn));
     }
     return $lots;
 }
 
-function search_lots($conn, $search, $limit) {
+function get_lots_count_in_category($conn, $category_id) {
+    $sql = "select count(id) as cnt"
+          ."  from lots"
+          ." where category = ? and finish_date > current_timestamp";
+    $count = db_fetch_data($conn, $sql, [$category_id]);
+    if (!$count && mysqli_errno($conn)) {
+        show_error(mysqli_error($conn));
+    }
+    return $count[0]["cnt"];
+}
+
+function search_lots($conn, $search, $limit, $offset) {
     $sql = "select lots.id, lots.name, lots.image, lots.start_price, lots.finish_date, categories.name as category_name from lots"
           ."  join categories on lots.category = categories.id"
           ." where finish_date > current_timestamp"
           ."   and match(lots.name, lots.description) against(?)"
-          ." limit ?;";
-    $lots = db_fetch_data($conn, $sql, [$search, $limit]);
+          ." limit ? offset ?;";
+    $lots = db_fetch_data($conn, $sql, [$search, $limit, $offset]);
     if (!$lots && mysqli_errno($conn)) {
         show_error(mysqli_error($conn));
     }
     return $lots;
+}
+
+function get_lots_search_count($conn, $search) {
+    $sql = "select count(id) as cnt"
+        ."  from lots"
+        ." where finish_date > current_timestamp and match(lots.name, lots.description) against(?)";
+    $count = db_fetch_data($conn, $sql, [$search]);
+    if (!$count && mysqli_errno($conn)) {
+        show_error(mysqli_error($conn));
+    }
+    return $count[0]["cnt"];
 }
 
 function get_lot($conn, $lot_id) {

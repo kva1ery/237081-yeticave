@@ -2,16 +2,14 @@
 require_once "functions.php";
 require_once "data.php";
 require_once "auth.php";
+require_once "Paginator.php";
 
 
 $conn = get_connection();
 $lots_categories = get_categories($conn);
 
-$category_id = "";
+$category_id = $_GET["id"] ?? "";
 $category = [];
-if (isset($_GET["id"])) {
-    $category_id = $_GET["id"];
-}
 foreach ($lots_categories as $cat) {
     if ($cat["id"] == $category_id) {
         $category = $cat;
@@ -21,11 +19,18 @@ if (!$category) {
     show_404();
 }
 
-$lots = get_lots_by_category($conn, $category_id, 9);
+$count = get_lots_count_in_category($conn, $category_id);
+$current_page = $_GET['page'] ?? 1;
+$url = sprintf("category.php?id=%s&page=", $category_id);
+$pages = new Paginator($count, 9, $current_page, $url);
+$offset = $pages->GetOffset();
+
+$lots = get_lots_by_category($conn, $category_id, 9, $offset);
 
 $page_content = include_template("category.php", [
     "lots" => $lots,
-    "category" => $category["name"]
+    "category" => $category["name"],
+    "pages" => $pages
 ]);
 
 $layout_content = include_template("layout.php", [
