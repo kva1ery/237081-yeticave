@@ -41,7 +41,7 @@ function time_to_finish($finish_date) {
     $format = "%H:%I";
     if ($dt_diff->days > 0) {
         $day = numberof($dt_diff->days, ["день", "дня", "дней"]);
-        $format = "%D $day %H:%I";
+        $format = "%d $day %H:%I";
     }
     return date_interval_format($dt_diff, $format);
 }

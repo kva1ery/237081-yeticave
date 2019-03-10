@@ -3,7 +3,14 @@
     <table class="rates__list">
         <?php foreach ($bets as $bet): ?>
         <?php $win = $bet["win"]?>
-        <tr class="rates__item <?=$win ? "rates__item--win" : "";?>">
+        <?php
+            $time_to_finish = time_to_finish($bet["lot_finish_date"]);
+            $style = "";
+            if (!$time_to_finish) {
+                $style = $win ? "rates__item--win" : "rates__item--end";
+            }
+        ?>
+        <tr class="rates__item <?=$style;?>">
             <td class="rates__info">
                 <div class="rates__img">
                     <img src="/img/<?=$bet["lot_image"]?>" width="54" height="40" alt="<?=esc($bet["lot_name"]);?>">
@@ -15,9 +22,20 @@
             </td>
             <td class="rates__timer">
                 <?php $time_finish = is_less_than_hour($bet["lot_finish_date"]) ? "timer--finishing" : "";?>
-
-                <div class="timer <?=$time_finish;?> <?=$win ? "timer--win" : "";?>">
-                    <?=$win ? "Ставка выиграла" : time_to_finish($bet["lot_finish_date"])?>
+                <?php
+                    $style = "";
+                    if (!$time_to_finish) {
+                        $style = $win ? "timer--win" : "timer--end";
+                    }
+                ?>
+                <div class="timer <?=$time_finish;?> <?=$style;?>">
+                    <?php
+                        if ($time_to_finish) {
+                            echo $time_to_finish;
+                        } else {
+                            echo $win ? "Ставка выиграла" : "Торги окончены";
+                        }
+                    ?>
                 </div>
             </td>
             <td class="rates__price">
