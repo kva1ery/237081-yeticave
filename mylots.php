@@ -7,7 +7,7 @@ require_once "auth.php";
 $conn = get_connection();
 $lots_categories = get_categories($conn);
 
-$bets = get_bets_by_user($conn, 2);
+$bets = get_bets_by_user($conn, $user["id"]);
 
 $page_content = include_template("mylots.php", [
     "bets" => $bets
