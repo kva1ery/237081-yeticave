@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Форматирует число для отображения в денежном формате
+ * @param int $number Число для форматирования
+ * @return string Отформатированное число
+ */
 function currency_format($number) {
     $number = ceil($number);
     return number_format($number, 0, ",", " ");
@@ -7,10 +12,9 @@ function currency_format($number) {
 
 /**
  * Склонение числительных
- * @param int $numberof — склоняемое число
- * @param array $declensions — склонения существительного
+ * @param int $numberof Склоняемое число
+ * @param array $declensions Склонения
  * @return string
- *
  */
 function numberof($numberof, $declensions)
 {
@@ -24,9 +28,8 @@ function numberof($numberof, $declensions)
 /**
  * Возвращает оставшееся до даты время в текстовом представлении.
  * Если дата в прошлом возвращает false
- * @param DateTime $finish_date — дата время до которого считается остаток
- * @return string
- *
+ * @param DateTime $finish_date Дата время до которого считается остаток
+ * @return string Оставшееся до даты время в текстовом представлении.
  */
 function time_to_finish($finish_date) {
     $curr_time = date_create("now");
@@ -49,9 +52,8 @@ function time_to_finish($finish_date) {
 /**
  * Возвращает дату в прошлом в текстовом представлении.
  * Если дата в будущем возвращает false
- * @param DateTime $start_date — дата время в прошлом
- * @return string
- *
+ * @param DateTime $start_date Дата время в прошлом
+ * @return string Отформатированная дата
  */
 function time_from_start($start_date)
 {
@@ -76,9 +78,8 @@ function time_from_start($start_date)
 
 /**
  * Возвращает true если до даты остался час, иначе false
- * @param DateTime $finish_date — дата время до которого считается остаток
- * @return string
- *
+ * @param DateTime $finish_date Дата время до которого считается остаток
+ * @return bool
  */
 function is_less_than_hour($finish_date) {
     $curr_time = date_create("now");
@@ -92,6 +93,12 @@ function is_less_than_hour($finish_date) {
     return $result;
 }
 
+/**
+ * Шаблонизатор. Возвращает содержимое шаблона заполненное данными
+ * @param string $name Имя файла шаблона
+ * @param array $data Данные для заполнения шаблона
+ * @return false|string Возвращает заполненный шаблон или false если не удалось найти файл шаблона
+ */
 function include_template($name, $data) {
     $name = 'templates/' . $name;
     $result = '';
@@ -109,11 +116,20 @@ function include_template($name, $data) {
     return $result;
 }
 
+/**
+ * Очищает пользовательский ввод
+ * @param string $str Строка для очистки
+ * @return string Очищенная строка
+ */
 function esc($str) {
     $text = strip_tags($str);
     return $text;
 }
 
+/**
+ * Отображает страницу ошибки
+ * @param string $error Текст ошибки
+ */
 function show_error($error) {
     $page_content = include_template("error.php", ["error" => $error]);
 
@@ -126,6 +142,9 @@ function show_error($error) {
     exit;
 };
 
+/**
+ * Отображает страницу 404
+ */
 function show_404() {
     http_response_code(404);
     $page_content = include_template("404.php", []);
@@ -139,19 +158,30 @@ function show_404() {
     exit;
 };
 
+/**
+ * Проверяет, что полученный в запросе файл является изображением
+ * @param string $file_name Имя файла
+ * @return bool true если файл является изображением, иначе false
+ */
 function file_is_image_valid($file_name) {
+     $result = true;
     if (empty($_FILES[$file_name]["name"])) {
-        return false;
+        $result = false;
     }
     $tmp_path = $_FILES[$file_name]["tmp_name"];
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $file_type = finfo_file($finfo, $tmp_path);
     if ($file_type !== "image/png" && $file_type !== "image/jpeg" && $file_type !== "image/webp") {
-        return false;
+        $result = false;
     }
-    return true;
+    return $result;
 }
 
+/**
+ * Сохраняет изображение полеченное в запросе
+ * @param string $file_name Имя файла
+ * @return string Имя сохранённого файла
+ */
 function save_image($file_name) {
     $tmp_path = $_FILES[$file_name]["tmp_name"];
     $extension = pathinfo($_FILES[$file_name]["name"], PATHINFO_EXTENSION);

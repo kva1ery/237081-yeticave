@@ -7,9 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 </head>
 <body>
-<h1><?=$winner["winner_name"];?> вы выиграли аукцион на сайте YetiCave</h1>
+<h1><?=esc($winner["winner_name"]);?> вы выиграли аукцион на сайте YetiCave</h1>
 
-<p>Ваша ставка в <i><?=currency_format($winner["price"]);?></i> рублей сыграла в аукционе на покупку &laquo;<?=$winner["name"];?>&raquo;</p>
+<p>Ваша ставка в <i><?=currency_format($winner["price"]);?></i> рублей сыграла в аукционе на покупку &laquo;<?=esc($winner["name"]);?>&raquo;</p>
 
 </body>
 </html>

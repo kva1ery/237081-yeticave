@@ -29,7 +29,7 @@
             <nav class="user-menu">
                 <?php if (isset($is_auth) && $is_auth): ?>
                     <div class="user-menu__logged">
-                        <p><?=$user_name ?? "";?></p>
+                        <p><?=$user_name ? esc($user_name) : "";?></p>
                         <a href="logout.php">Выйти</a>
                     </div>
                 <?php else: ?>
@@ -51,7 +51,7 @@
             <nav class="nav">
                 <ul class="nav__list container">
                     <?php foreach ($lots_categories as $category): ?>
-                        <?php $current = (isset($current_category) && $category["id"] == $current_category) ? "nav__item--current" : ""; ?>
+                        <?php $current = (isset($current_category) && $category["id"] === (int)$current_category) ? "nav__item--current" : ""; ?>
                         <li class="nav__item <?=$current;?>">
                             <a href="category.php?id=<?=$category["id"];?>"><?=$category["name"];?></a>
                         </li>

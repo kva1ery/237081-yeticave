@@ -11,7 +11,7 @@ $login = [];
 $errors = [];
 $user = [];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $login = $_POST;
     $errors = login_validate($login);
 

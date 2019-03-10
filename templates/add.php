@@ -18,7 +18,7 @@
             <label for="category">Категория</label>
             <select id="category" name="category" required>
                 <?php foreach ($lots_categories as $category):
-                    $selected = $category["id"] == $value ? "selected" : ""; ?>
+                    $selected = $category["id"] === (int)$value ? "selected" : ""; ?>
                     <option value="<?=$category["id"];?>" <?=$selected;?> ><?=$category["name"];?></option>
                 <?php endforeach; ?>
             </select>
@@ -75,7 +75,7 @@
 
         <?php $classname = isset($errors["finish_date"]) ? "form__item--invalid" : "";
         $error = $errors["finish_date"] ?? "";
-        $value = $lot["finish_date"] ? date_format($lot["finish_date"], "Y-m-d") : ""; ?>
+        $value = isset($lot["finish_date"]) ? date_format($lot["finish_date"], "Y-m-d") : ""; ?>
         <div class="form__item <?=$classname;?>">
             <label for="lot-date">Дата окончания торгов</label>
             <input class="form__input-date" id="lot-date" type="date" name="finish_date" value="<?=$value;?>">

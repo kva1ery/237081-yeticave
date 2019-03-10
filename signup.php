@@ -10,7 +10,7 @@ $lots_categories = get_categories($conn);
 $user = [];
 $errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $user = $_POST;
     $errors = user_validate($user);
 

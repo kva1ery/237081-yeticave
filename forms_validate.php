@@ -1,6 +1,10 @@
 <?php
 
-
+/**
+ * Проверяет данные формы добавления лота, и возращает коллекцию ошибок
+ * @param array $form Данные формы лота
+ * @return array Коллекция ошибок key - поле формы, value - текст ошибки
+ */
 function lot_validate($form) {
     $required_fields = [
         "name" => "Введите наименование лота",
@@ -22,11 +26,9 @@ function lot_validate($form) {
             "min_range" => 0
         ]
     ];
-
     if (!filter_var($form["start_price"], FILTER_VALIDATE_INT, $options)) {
         $errors["start_price"] = "Начальная цена должна быть положительным числом";
     }
-
     if (!filter_var($form["price_step"], FILTER_VALIDATE_INT, $options)) {
         $errors["price_step"] = "Шаг ставки должен быть положительным числом";
     }
@@ -36,10 +38,14 @@ function lot_validate($form) {
     if($dt_diff->days <= 0 || !$dt_diff->invert) {
         $errors["finish_date"] = "Дата окончания торгов должна быть больше текущей хотя бы на один день";
     }
-
     return $errors;
 }
 
+/**
+ * Проверяет данные формы добавления ставки, и возращает коллекцию ошибок
+ * @param array $form Данные формы ставки
+ * @return array Коллекция ошибок key - поле формы, value - текст ошибки
+ */
 function bet_validate($form) {
     $required_fields = [
         "price" => "Введите вашу ставку"
@@ -57,6 +63,11 @@ function bet_validate($form) {
     return $errors;
 }
 
+/**
+ * Проверяет данные формы регистрации нового пользователя, и возращает коллекцию ошибок
+ * @param array $form Данные формы пользователя
+ * @return array Коллекция ошибок key - поле формы, value - текст ошибки
+ */
 function user_validate($form) {
     $required_fields = [
         "name" => "Введите имя",
@@ -76,6 +87,11 @@ function user_validate($form) {
     return $errors;
 }
 
+/**
+ * Проверяет данные формы логина пользователя, и возращает коллекцию ошибок
+ * @param array $form Данные формы логина пользователя
+ * @return array Коллекция ошибок key - поле формы, value - текст ошибки
+ */
 function login_validate($form) {
     $required_fields = [
         "email" => "Введите e-mail",

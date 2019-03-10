@@ -11,7 +11,7 @@ $lots_categories = get_categories($conn);
 $category_id = $_GET["id"] ?? "";
 $category = [];
 foreach ($lots_categories as $cat) {
-    if ($cat["id"] == $category_id) {
+    if ($cat["id"] === (int)$category_id) {
         $category = $cat;
     }
 }

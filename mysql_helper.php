@@ -2,9 +2,9 @@
 
 /**
  * Создает подготовленное выражение на основе готового SQL запроса и переданных данных
- * @param $conn mysqli  Ресурс соединения
- * @param $sql  string  SQL запрос с плейсхолдерами вместо значений
- * @param $data array   Данные для вставки на место плейсхолдеров
+ * @param mysqli $conn Ресурс соединения
+ * @param string $sql SQL запрос с плейсхолдерами вместо значений
+ * @param array $data Данные для вставки на место плейсхолдеров
  * @return mysqli_stmt Подготовленное выражение
  */
 function db_get_prepare_stmt($conn, $sql, $data = []) {
@@ -43,9 +43,9 @@ function db_get_prepare_stmt($conn, $sql, $data = []) {
 
 /**
  * Выполянет запрос на выборку данных на основе SQL запроса и переданных данных
- * @param $conn mysqli Ресурс соединения
- * @param $sql  string SQL запрос с плейсхолдерами вместо значений
- * @param $data array  Данные для вставки на место плейсхолдеров
+ * @param mysqli $conn Ресурс соединения
+ * @param string $sql SQL запрос с плейсхолдерами вместо значений
+ * @param array $data Данные для вставки на место плейсхолдеров
  * @return array данные из БД
  */
 function db_fetch_data($conn, $sql, $data = []) {
@@ -61,9 +61,9 @@ function db_fetch_data($conn, $sql, $data = []) {
 
 /**
  * Выполянет запрос на вставку данных на основе SQL запроса и переданных данных
- * @param $conn mysqli Ресурс соединения
- * @param $sql  string SQL запрос с плейсхолдерами вместо значений
- * @param $data array  Данные для вставки на место плейсхолдеров
+ * @param mysqli $conn Ресурс соединения
+ * @param string $sql SQL запрос с плейсхолдерами вместо значений
+ * @param array $data Данные для вставки на место плейсхолдеров
  * @return int id вставленной записи
  */
 function db_insert_data($conn, $sql, $data = []) {
@@ -77,9 +77,9 @@ function db_insert_data($conn, $sql, $data = []) {
 
 /**
  * Выполянет запрос на обновление данных на основе SQL запроса и переданных данных
- * @param $conn mysqli Ресурс соединения
- * @param $sql  string SQL запрос с плейсхолдерами вместо значений
- * @param $data array  Данные для вставки на место плейсхолдеров
+ * @param mysqli $conn Ресурс соединения
+ * @param string $sql SQL запрос с плейсхолдерами вместо значений
+ * @param array $data Данные для вставки на место плейсхолдеров
  * @return int результат выполнения запроса
  */
 function db_update_data($conn, $sql, $data = []) {

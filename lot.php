@@ -25,9 +25,9 @@ if (count($bets) > 0 ) {
 }
 $lot["min_bet"] = $lot["current_price"] + $lot["price_step"];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($is_auth) || !$is_auth) {
-        header('HTTP/1.1 403 Forbidden');
+        header("HTTP/1.1 403 Forbidden");
         exit;
     }
 

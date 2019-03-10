@@ -15,7 +15,7 @@ $lots_categories = get_categories($conn);
 $lot = [];
 $errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $lot = $_POST;
     $lot["finish_date"] = date_create($lot["finish_date"]);
     $errors = lot_validate($lot);

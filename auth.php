@@ -7,7 +7,12 @@ $is_auth = isset($_SESSION["user"]);
 $user_name = $_SESSION["user"]["name"] ?? "";
 $user = $_SESSION["user"] ?? "";
 
-
+/**
+ * Выполянет аутентификацию пользователя на сайте
+ * @param mysqli $conn Ресурс соединения
+ * @param array $login Данные формы: логин, пароль
+ * @return bool true если пользователь аутентифициорован
+ */
 function login($conn, $login) {
     $user = get_user_by_email($conn, $login["email"]);
     $is_auth = false;
@@ -18,6 +23,9 @@ function login($conn, $login) {
     return $is_auth;
 }
 
+/**
+ * Завершает текущую сессию пользователя
+ */
 function logout() {
     $_SESSION = [];
 }
