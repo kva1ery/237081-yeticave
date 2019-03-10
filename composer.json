@@ -1,0 +1,13 @@
+{
+    "name": "va1ery/yeticave",
+    "description": "Учебный проект HTMLAcademy",
+    "authors": [
+        {
+            "name": "Valeriy Kokorev",
+            "email": "kokorev.valery@gmail.com"
+        }
+    ],
+    "require": {
+        "swiftmailer/swiftmailer": "^6.1"
+    }
+}

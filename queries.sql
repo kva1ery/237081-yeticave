@@ -77,3 +77,18 @@ select categories.name as category_name, lots.id, lots.name, lots.description, l
   join categories on lots.category = categories.id
  where match (lots.name, lots.description) against ('Snowboard' in BOOLEAN mode )
 order by create_date desc;
+
+-- Поиск победителей --
+select lots.id, lots.name, lots.finish_date, bets.id as bet_id, bets.price, users.name winner_name,
+       users.email winner_email
+  from lots
+  join bets on lots.id = bets.lot
+  join users on bets.user = users.id
+where lots.finish_date <= current_timestamp()
+  and lots.id not in ( select l1.id
+                         from lots l1
+                         join bets b1 on l1.id = b1.lot
+                        where b1.win = 1 )
+  and bets.price = ( select max(b2.price)
+                       from bets b2
+                      where b2.lot = lots.id );

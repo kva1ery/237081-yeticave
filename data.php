@@ -135,6 +135,36 @@ function get_bets_by_user($conn, $user_id) {
     return $bets;
 }
 
+function get_winning_bets($conn) {
+    $sql = "select lots.id, lots.name, lots.finish_date, bets.id as bet_id, bets.price, users.name winner_name,
+                   users.email winner_email
+              from lots
+              join bets on lots.id = bets.lot
+              join users on bets.user = users.id
+             where lots.finish_date <= current_timestamp()
+               and lots.id not in ( select l1.id
+                                      from lots l1
+                                      join bets b1 on l1.id = b1.lot
+                                     where b1.win = 1 )
+               and bets.price = ( select max(b2.price)
+                                    from bets b2
+                                   where b2.lot = lots.id )";
+    $bets = db_fetch_data($conn, $sql);
+    if (!$bets && mysqli_errno($conn)) {
+        show_error(mysqli_error($conn));
+    }
+    return $bets;
+}
+
+function set_winning_bets($conn, $bet_id) {
+    $sql = "update bets set win = 1 where id = ?";
+    $result = db_update_data($conn, $sql, [$bet_id]);
+    if (!$result) {
+        show_error(mysqli_error($conn));
+    }
+    return true;
+}
+
 function save_lot($conn, $lot) {
     $sql = "insert into lots (name, category, image, start_price, finish_date, price_step, author, description)"
           ."values (?, ?, ?, ?, ?, ?, ?, ?);";

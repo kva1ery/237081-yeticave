@@ -74,3 +74,16 @@ function db_insert_data($conn, $sql, $data = []) {
   }
   return $result;
 }
+
+/**
+ * Выполянет запрос на обновление данных на основе SQL запроса и переданных данных
+ * @param $conn mysqli Ресурс соединения
+ * @param $sql  string SQL запрос с плейсхолдерами вместо значений
+ * @param $data array  Данные для вставки на место плейсхолдеров
+ * @return int результат выполнения запроса
+ */
+function db_update_data($conn, $sql, $data = []) {
+    $stmt = db_get_prepare_stmt($conn, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    return $result;
+}

@@ -3,6 +3,7 @@ require_once "functions.php";
 require_once "data.php";
 require_once "auth.php";
 
+include_once "define_winners.php";
 
 $conn = get_connection();
 $lots_categories = get_categories($conn);
