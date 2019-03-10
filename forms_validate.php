@@ -22,12 +22,19 @@ function lot_validate($form) {
             "min_range" => 0
         ]
     ];
+
     if (!filter_var($form["start_price"], FILTER_VALIDATE_INT, $options)) {
         $errors["start_price"] = "Начальная цена должна быть положительным числом";
     }
 
     if (!filter_var($form["price_step"], FILTER_VALIDATE_INT, $options)) {
         $errors["price_step"] = "Шаг ставки должен быть положительным числом";
+    }
+
+    $tomorrow = date_create("tomorrow");
+    $dt_diff =  date_diff($form["finish_date"], $tomorrow);
+    if($dt_diff->days <= 0 || !$dt_diff->invert) {
+        $errors["finish_date"] = "Дата окончания торгов должна быть больше текущей хотя бы на один день";
     }
 
     return $errors;

@@ -173,7 +173,7 @@ function save_lot($conn, $lot) {
         $lot["category"],
         $lot["image"],
         $lot["start_price"],
-        $lot["finish_date"],
+        date_format($lot["finish_date"], "Y-m-d"),
         $lot["price_step"],
         $lot["author"],
         $lot["description"]

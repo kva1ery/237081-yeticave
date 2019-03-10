@@ -75,7 +75,7 @@
 
         <?php $classname = isset($errors["finish_date"]) ? "form__item--invalid" : "";
         $error = $errors["finish_date"] ?? "";
-        $value = $lot["finish_date"] ?? ""; ?>
+        $value = $lot["finish_date"] ? date_format($lot["finish_date"], "Y-m-d") : ""; ?>
         <div class="form__item <?=$classname;?>">
             <label for="lot-date">Дата окончания торгов</label>
             <input class="form__input-date" id="lot-date" type="date" name="finish_date" value="<?=$value;?>">

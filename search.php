@@ -8,7 +8,7 @@ require_once "Paginator.php";
 $conn = get_connection();
 $lots_categories = get_categories($conn);
 
-$search = $_GET["search"] ?? '';
+$search = $_GET["search"] ? trim($_GET["search"]) : "";
 
 $lots = [];
 $pages = null;
